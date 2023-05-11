@@ -12,6 +12,7 @@
         <module>Common</module>
         <module>Core</module>
         <module>Player</module>
+        <module>Enemy</module>
     </modules>
 
     <properties>

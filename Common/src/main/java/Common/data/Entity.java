@@ -1,6 +1,8 @@
 package Common.data;
 
 import Common.data.entityparts.EntityPart;
+
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
@@ -14,8 +16,11 @@ public class Entity implements Serializable {
     private float radius;
     private Map<Class, EntityPart> parts;
     
+    private float[] color;
+    
     public Entity() {
         parts = new ConcurrentHashMap<>();
+        color = new float[]{1,1,1,1};
     }
     
     public void add(EntityPart part) {
@@ -56,5 +61,13 @@ public class Entity implements Serializable {
 
     public void setShapeY(float[] shapeY) {
         this.shapeY = shapeY;
+    }
+
+    public void setColor(float[] color) {
+        this.color = color;
+    }
+
+    public float[] getColor() {
+        return color;
     }
 }

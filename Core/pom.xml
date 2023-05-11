@@ -69,7 +69,6 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Common</artifactId>
@@ -78,6 +77,11 @@
         <dependency>
             <groupId>SB4</groupId>
             <artifactId>Player</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>Sb4</groupId>
+            <artifactId>Enemy</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

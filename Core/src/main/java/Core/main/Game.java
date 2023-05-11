@@ -1,10 +1,12 @@
 package Core.main;
 
+import Enemy.EnemyControlSystem;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
@@ -13,8 +15,10 @@ import Common.services.IGamePluginService;
 import Core.managers.GameInputProcessor;
 import Player.PlayerControlSystem;
 import Player.PlayerPlugin;
+import Enemy.EnemyPlugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Game
@@ -45,10 +49,14 @@ public class Game
         );
 
         IGamePluginService playerPlugin = new PlayerPlugin();
-
         IEntityProcessingService playerProcess = new PlayerControlSystem();
+        IGamePluginService enemyPlugin = new EnemyPlugin();
+        IEntityProcessingService enemyProcess = new EnemyControlSystem();
+
         entityPlugins.add(playerPlugin);
         entityProcessors.add(playerProcess);
+        entityPlugins.add(enemyPlugin);
+        entityProcessors.add(enemyProcess);
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
@@ -81,7 +89,8 @@ public class Game
     private void draw() {
         for (Entity entity : world.getEntities()) {
 
-            sr.setColor(1, 1, 1, 1);
+            float[] color = entity.getColor();
+            sr.setColor(color[0],color[1],color[2],color[3]);
 
             sr.begin(ShapeRenderer.ShapeType.Line);
 
@@ -95,6 +104,7 @@ public class Game
                 sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
             }
 
+            sr.setColor(1, 1, 1, 1);
             sr.end();
         }
     }
