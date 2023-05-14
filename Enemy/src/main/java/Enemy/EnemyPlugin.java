@@ -3,6 +3,7 @@ package Enemy;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IGamePluginService;
@@ -38,6 +39,7 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.setColor(new float[]{1,0,0,1});
         enemyShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         enemyShip.add(new PositionPart(x, y, radians));
+        enemyShip.add(new LifePart(5,69));
         
         return enemyShip;
     }

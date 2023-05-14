@@ -3,6 +3,7 @@ package Player;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IGamePluginService;
@@ -35,6 +36,7 @@ public class PlayerPlugin implements IGamePluginService {
         Entity playerShip = new Player();
         playerShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         playerShip.add(new PositionPart(x, y, radians));
+        playerShip.add(new LifePart(10,69));
         
         return playerShip;
     }

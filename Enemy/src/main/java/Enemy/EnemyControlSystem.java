@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.GameKeys;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IEntityProcessingService;
@@ -41,19 +42,23 @@ public class EnemyControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
 
-        for (Entity Enemy : world.getEntities(Enemy.class)) {
-            PositionPart positionPart = Enemy.getPart(PositionPart.class);
-            MovingPart movingPart = Enemy.getPart(MovingPart.class);
+        for (Entity enemy : world.getEntities(Enemy.class)) {
+            PositionPart positionPart = enemy.getPart(PositionPart.class);
+            MovingPart movingPart = enemy.getPart(MovingPart.class);
+            LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.setLeft(left);
             movingPart.setRight(right);
             movingPart.setUp(up);
             
             
-            movingPart.process(gameData, Enemy);
-            positionPart.process(gameData, Enemy);
+            movingPart.process(gameData, enemy);
+            positionPart.process(gameData, enemy);
 
-            updateShape(Enemy);
+            updateShape(enemy);
+            if(lifePart.getLife() <= 0){
+                world.removeEntity(enemy);
+            }
         }
     }
 
