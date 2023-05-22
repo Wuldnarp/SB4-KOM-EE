@@ -35,11 +35,11 @@ public class AsteroidControlSystem implements IEntityProcessingService {
             }
 
             Asteroid asteroid1 = (Asteroid) asteroid;
-            if(lifePart.getLife() <= 0 && asteroid1.getType() != AsteroidSize.SMALL){
-                splitterPart.setShouldSplit(true);
-            }
+
             if(lifePart.getLife() <= 0 && asteroid1.getType() == AsteroidSize.SMALL){
                 world.removeEntity(asteroid);
+            } else if(lifePart.getLife() <= 0){
+                splitterPart.setShouldSplit(true);
             }
 
             movingPart.process(gameData, asteroid);

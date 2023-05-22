@@ -31,7 +31,7 @@ public class BulletPlugin implements IGamePluginService {
 
         bullet.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         bullet.add(new PositionPart(x, y, radians));
-        bullet.add(new LifePart(1,69));
+        bullet.add(new LifePart(1,2));
 
         return bullet;
     }

@@ -24,9 +24,11 @@ public class BulletControlSystem implements IEntityProcessingService {
             lifePart.process(gameData, bullet);
 
             updateShape(bullet);
-            if(lifePart.getLife() <= 0){
+
+            if(lifePart.getLife() <= 0 || lifePart.getExpiration() <= 0){
                 world.removeEntity(bullet);
             }
+
         }
     }
     private void updateShape(Entity entity) {
