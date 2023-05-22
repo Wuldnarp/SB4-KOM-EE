@@ -8,8 +8,6 @@ import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IGamePluginService;
 
-import java.awt.*;
-
 public class EnemyPlugin implements IGamePluginService {
 
     private Entity Enemy;

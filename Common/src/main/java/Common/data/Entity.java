@@ -2,7 +2,6 @@ package Common.data;
 
 import Common.data.entityparts.EntityPart;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
