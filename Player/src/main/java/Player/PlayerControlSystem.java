@@ -9,6 +9,11 @@ import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IEntityProcessingService;
 import Common.data.GameKeys;
+import Common.services.IGameBulletPluginService;
+import Common.util.SPILocator;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -31,7 +36,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             if (gameData.getKeys().isDown(GameKeys.SPACE)){
 
-                new BulletPlugin().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))), (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData,world);
+                Optional<IGameBulletPluginService> bullet = getAll(IGameBulletPluginService.class).stream().findAny();
+
+                bullet.get().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))), (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData,world);
             }
 
             movingPart.process(gameData, player);
@@ -69,4 +76,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
+
+    public <T> List<T> getAll(Class<T> service){
+        return SPILocator.locateAll(service);
+    }
 }
