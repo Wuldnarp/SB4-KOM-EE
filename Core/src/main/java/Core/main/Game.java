@@ -1,5 +1,11 @@
 package Core.main;
 
+import Asteroid.AsteroidControlSystem;
+import Asteroid.AsteroidPlugin;
+import Asteroid.AsteroidSplitter;
+import Bullet.BulletControlSystem;
+import Collision.Collider;
+import Enemy.EnemyControlSystem;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +19,7 @@ import Common.services.IGamePluginService;
 import Core.managers.GameInputProcessor;
 import Player.PlayerControlSystem;
 import Player.PlayerPlugin;
+import Enemy.EnemyPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +52,24 @@ public class Game
         );
 
         IGamePluginService playerPlugin = new PlayerPlugin();
-
         IEntityProcessingService playerProcess = new PlayerControlSystem();
+        IGamePluginService enemyPlugin = new EnemyPlugin();
+        IEntityProcessingService enemyProcess = new EnemyControlSystem();
+        IGamePluginService asteroidPlugin = new AsteroidPlugin();
+        IEntityProcessingService asteroidProcess = new AsteroidControlSystem();
+        IEntityProcessingService asteroidSplitter = new AsteroidSplitter();
+        IEntityProcessingService collider = new Collider();
+        IEntityProcessingService bullet = new BulletControlSystem();
+
         entityPlugins.add(playerPlugin);
         entityProcessors.add(playerProcess);
+        entityPlugins.add(enemyPlugin);
+        entityProcessors.add(enemyProcess);
+        entityPlugins.add(asteroidPlugin);
+        entityProcessors.add(asteroidProcess);
+        entityProcessors.add(asteroidSplitter);
+        entityProcessors.add(collider);
+        entityProcessors.add(bullet);
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
@@ -81,7 +102,8 @@ public class Game
     private void draw() {
         for (Entity entity : world.getEntities()) {
 
-            sr.setColor(1, 1, 1, 1);
+            float[] color = entity.getColor();
+            sr.setColor(color[0],color[1],color[2],color[3]);
 
             sr.begin(ShapeRenderer.ShapeType.Line);
 
@@ -95,6 +117,7 @@ public class Game
                 sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
             }
 
+            sr.setColor(1, 1, 1, 1);
             sr.end();
         }
     }

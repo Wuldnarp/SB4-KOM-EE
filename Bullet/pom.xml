@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Player</artifactId>
+    <artifactId>Bullet</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -24,11 +24,6 @@
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>SB4</groupId>
-            <artifactId>Bullet</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

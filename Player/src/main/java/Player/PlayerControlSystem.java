@@ -1,8 +1,10 @@
 package Player;
 
+import Bullet.BulletPlugin;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IEntityProcessingService;
@@ -14,22 +16,32 @@ import Common.data.GameKeys;
  */
 public class PlayerControlSystem implements IEntityProcessingService {
 
+
     @Override
     public void process(GameData gameData, World world) {
 
         for (Entity player : world.getEntities(Player.class)) {
             PositionPart positionPart = player.getPart(PositionPart.class);
             MovingPart movingPart = player.getPart(MovingPart.class);
+            LifePart lifePart = player.getPart(LifePart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
-            
-            
+
+            if (gameData.getKeys().isDown(GameKeys.SPACE)){
+
+                new BulletPlugin().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))), (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData,world);
+            }
+
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
 
             updateShape(player);
+
+            if(lifePart.getLife() <= 0){
+                world.removeEntity(player);
+            }
         }
     }
 
