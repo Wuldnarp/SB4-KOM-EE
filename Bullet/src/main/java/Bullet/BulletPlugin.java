@@ -6,9 +6,10 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
+import Common.services.IGameBulletPluginService;
 import Common.services.IGamePluginService;
 
-public class BulletPlugin implements IGamePluginService {
+public class BulletPlugin implements IGameBulletPluginService {
 
     private Entity bullet;
     private float radians;
@@ -41,6 +42,7 @@ public class BulletPlugin implements IGamePluginService {
         world.removeEntity(bullet);
     }
 
+    @Override
     public void shot(float radians, float posX, float posY, GameData gameData, World world){
         this.radians = radians;
         this.x = posX;

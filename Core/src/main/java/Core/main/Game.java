@@ -16,6 +16,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
+import Common.util.SPILocator;
 import Core.managers.GameInputProcessor;
 import Player.PlayerControlSystem;
 import Player.PlayerPlugin;
@@ -51,25 +52,10 @@ public class Game
                 new GameInputProcessor(gameData)
         );
 
-        IGamePluginService playerPlugin = new PlayerPlugin();
-        IEntityProcessingService playerProcess = new PlayerControlSystem();
-        IGamePluginService enemyPlugin = new EnemyPlugin();
-        IEntityProcessingService enemyProcess = new EnemyControlSystem();
-        IGamePluginService asteroidPlugin = new AsteroidPlugin();
-        IEntityProcessingService asteroidProcess = new AsteroidControlSystem();
-        IEntityProcessingService asteroidSplitter = new AsteroidSplitter();
-        IEntityProcessingService collider = new Collider();
-        IEntityProcessingService bullet = new BulletControlSystem();
+        entityPlugins.addAll(getAll(IGamePluginService.class));
+        entityProcessors.addAll(getAll(IEntityProcessingService.class));
 
-        entityPlugins.add(playerPlugin);
-        entityProcessors.add(playerProcess);
-        entityPlugins.add(enemyPlugin);
-        entityProcessors.add(enemyProcess);
-        entityPlugins.add(asteroidPlugin);
-        entityProcessors.add(asteroidProcess);
-        entityProcessors.add(asteroidSplitter);
-        entityProcessors.add(collider);
-        entityProcessors.add(bullet);
+
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
@@ -120,6 +106,10 @@ public class Game
             sr.setColor(1, 1, 1, 1);
             sr.end();
         }
+    }
+
+    public <T> List<T> getAll(Class<T> service){
+        return SPILocator.locateAll(service);
     }
 
     @Override
