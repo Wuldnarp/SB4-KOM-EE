@@ -1,5 +1,7 @@
 package Core.main;
 
+import Core.injectors.PluginInjector;
+import Core.injectors.ProcessInjector;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,24 +10,28 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.services.IEntityProcessingService;
-import Common.services.IGamePluginService;
-import Common.util.SPILocator;
 import Core.managers.GameInputProcessor;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Game
-        implements ApplicationListener {
+@Service("Game")
+public class Game implements ApplicationListener {
 
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
+    private GameData gameData;
+    private World world;
 
-    private final GameData gameData = new GameData();
-    private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
-    private List<IGamePluginService> entityPlugins = new ArrayList<>();
-    private World world = new World();
+    private AnnotationConfigApplicationContext bean;
+
+    public Game(){
+        this.world = new World();
+        this.gameData = new GameData();
+        this.bean = new AnnotationConfigApplicationContext();
+        this.bean.scan("Core.injectors");
+        this.bean.refresh();
+    }
+
 
     @Override
     public void create() {
@@ -43,14 +49,8 @@ public class Game
                 new GameInputProcessor(gameData)
         );
 
-        entityPlugins.addAll(getAll(IGamePluginService.class));
-        entityProcessors.addAll(getAll(IEntityProcessingService.class));
-
-
         // Lookup all Game Plugins using ServiceLoader
-        for (IGamePluginService iGamePlugin : entityPlugins) {
-            iGamePlugin.start(gameData, world);
-        }
+        ((PluginInjector) this.bean.getBean("PluginInjector")).runPlugins(gameData,world);
     }
 
     @Override
@@ -71,9 +71,7 @@ public class Game
 
     private void update() {
         // Update
-        for (IEntityProcessingService entityProcessorService : entityProcessors) {
-            entityProcessorService.process(gameData, world);
-        }
+        ((ProcessInjector) bean.getBean("ProcessInjector")).runAllProcesses(gameData, world);
     }
 
     private void draw() {
@@ -97,10 +95,6 @@ public class Game
             sr.setColor(1, 1, 1, 1);
             sr.end();
         }
-    }
-
-    public <T> List<T> getAll(Class<T> service){
-        return SPILocator.locateAll(service);
     }
 
     @Override

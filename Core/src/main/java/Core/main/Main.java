@@ -1,7 +1,9 @@
 package Core.main;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
 	
@@ -11,9 +13,12 @@ public class Main {
 		cfg.setWindowedMode(500,400);
 		cfg.setTitle("Asteroids");
 		cfg.setResizable(false);
-		
-		new Lwjgl3Application(new Game(), cfg);
-		
+
+		AnnotationConfigApplicationContext application = new AnnotationConfigApplicationContext();
+		application.scan("Core.main");
+		application.refresh();
+
+		new Lwjgl3Application(((ApplicationListener) application.getBean("Game")), cfg);
 	}
 	
 }
