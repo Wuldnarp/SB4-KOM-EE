@@ -1,5 +1,3 @@
-import Asteroid.AsteroidPlugin;
-
 module Asteroid {
     requires Common;
     exports Asteroid;
