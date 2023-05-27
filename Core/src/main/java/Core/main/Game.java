@@ -1,11 +1,5 @@
 package Core.main;
 
-import Asteroid.AsteroidControlSystem;
-import Asteroid.AsteroidPlugin;
-import Asteroid.AsteroidSplitter;
-import Bullet.BulletControlSystem;
-import Collision.Collider;
-import Enemy.EnemyControlSystem;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,9 +12,6 @@ import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.util.SPILocator;
 import Core.managers.GameInputProcessor;
-import Player.PlayerControlSystem;
-import Player.PlayerPlugin;
-import Enemy.EnemyPlugin;
 
 import java.util.ArrayList;
 import java.util.List;

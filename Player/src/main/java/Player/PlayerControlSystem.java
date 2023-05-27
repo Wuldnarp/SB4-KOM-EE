@@ -1,6 +1,5 @@
 package Player;
 
-import Bullet.BulletPlugin;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
