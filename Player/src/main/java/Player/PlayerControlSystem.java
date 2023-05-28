@@ -34,10 +34,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
             if (gameData.getKeys().isDown(GameKeys.SPACE)){
-
-                Optional<IGameBulletPluginService> bullet = getAll(IGameBulletPluginService.class).stream().findAny();
-
-                bullet.get().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))), (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData,world);
+                shot(gameData, world, positionPart);
             }
 
             movingPart.process(gameData, player);
@@ -49,6 +46,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 world.removeEntity(player);
             }
         }
+    }
+
+    private void shot(GameData gameData, World world, PositionPart positionPart) {
+        Optional<IGameBulletPluginService> bullet = getAll(IGameBulletPluginService.class).stream().findAny();
+
+        bullet.get().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))),
+                (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData, world);
     }
 
     private void updateShape(Entity entity) {

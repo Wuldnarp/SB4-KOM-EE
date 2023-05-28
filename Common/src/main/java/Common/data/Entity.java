@@ -22,12 +22,22 @@ public class Entity implements Serializable {
         color = new float[]{1,1,1,1};
     }
     
-    public void add(EntityPart part) {
-        parts.put(part.getClass(), part);
+    public Boolean add(EntityPart part) {
+        try {
+            parts.put(part.getClass(), part);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
     
-    public void remove(Class partClass) {
-        parts.remove(partClass);
+    public boolean remove(Class partClass) {
+        try {
+            parts.remove(partClass);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
     
     public <E extends EntityPart> E getPart(Class partClass) {

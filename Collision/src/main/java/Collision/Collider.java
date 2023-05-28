@@ -24,9 +24,8 @@ public class Collider implements IEntityProcessingService {
                 // if the two entities are identical, skip the iteration
                 if (entity.getID().equals(collisionDetection.getID())) {
                     continue;
-
-                    // remove entities with zero in expiration
                 }
+                // remove entities with zero in expiration
                 if (entityLife.getExpiration() <= 0) {
                     world.removeEntity(entity);
                     // if collisioner expiration is zero or beloq, remove.
