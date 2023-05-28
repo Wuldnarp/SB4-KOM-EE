@@ -43,7 +43,7 @@ public class BulletPlugin implements IGameBulletPluginService {
     }
 
     @Override
-    public void shot(float radians, float posX, float posY, GameData gameData, World world){
+    public void shoot(float radians, float posX, float posY, GameData gameData, World world){
         this.radians = radians;
         this.x = posX;
         this.y = posY;

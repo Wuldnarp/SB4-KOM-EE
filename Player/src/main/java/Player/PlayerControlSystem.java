@@ -34,7 +34,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
             if (gameData.getKeys().isDown(GameKeys.SPACE)){
-                shot(gameData, world, positionPart);
+                shoot(gameData, world, positionPart);
             }
 
             movingPart.process(gameData, player);
@@ -48,10 +48,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
-    private void shot(GameData gameData, World world, PositionPart positionPart) {
+    private void shoot(GameData gameData, World world, PositionPart positionPart) {
         Optional<IGameBulletPluginService> bullet = getAll(IGameBulletPluginService.class).stream().findAny();
 
-        bullet.get().shot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))),
+        bullet.get().shoot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))),
                 (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData, world);
     }
 
