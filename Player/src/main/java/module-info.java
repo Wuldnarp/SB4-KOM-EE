@@ -1,6 +1,5 @@
 module Player {
     requires Common;
-    requires Bullet;
 
     uses Common.services.IGameBulletPluginService;
 
