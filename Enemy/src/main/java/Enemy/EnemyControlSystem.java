@@ -2,17 +2,17 @@ package Enemy;
 
 import Common.data.Entity;
 import Common.data.GameData;
-import Common.data.GameKeys;
 import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.PositionPart;
 import Common.services.IEntityProcessingService;
+import Common.services.IGameBulletPluginService;
+import Common.util.SPILocator;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -20,23 +20,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class EnemyControlSystem implements IEntityProcessingService {
 
-    private ScheduledExecutorService randomMovement;
     private boolean up;
     private boolean left;
     private  boolean right;
     private Random random;
+    private float shootTimer;
+    private float moveTimer;
 
     public EnemyControlSystem(){
-        this.randomMovement = Executors.newSingleThreadScheduledExecutor();
         this.random = new Random();
-        randomMovement.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                up = random.nextBoolean();
-                left = random.nextBoolean();
-                right = random.nextBoolean();
-            }
-        },0,5, TimeUnit.SECONDS);
+        this.shootTimer = 3;
+        this.moveTimer = 3;
     }
 
     @Override
@@ -47,11 +41,25 @@ public class EnemyControlSystem implements IEntityProcessingService {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
 
+            moveTimer -= gameData.getDelta();
+            if (moveTimer <= 0){
+                up = random.nextBoolean();
+                left = random.nextBoolean();
+                right = random.nextBoolean();
+                moveTimer = 3;
+            }
+
+            shootTimer -= gameData.getDelta();
+            if(shootTimer <= 0){
+                shoot(gameData, world, positionPart);
+
+                shootTimer = 3;
+            }
+
             movingPart.setLeft(left);
             movingPart.setRight(right);
             movingPart.setUp(up);
-            
-            
+
             movingPart.process(gameData, enemy);
             positionPart.process(gameData, enemy);
 
@@ -60,6 +68,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 world.removeEntity(enemy);
             }
         }
+    }
+
+    private void shoot(GameData gameData, World world, PositionPart positionPart) {
+        Optional<IGameBulletPluginService> bullet = getAll(IGameBulletPluginService.class).stream().findAny();
+
+        bullet.get().shoot(positionPart.getRadians(), (float) (positionPart.getX()+(10*Math.cos(positionPart.getRadians()))),
+                (float) (positionPart.getY()+(10*Math.sin(positionPart.getRadians()))), gameData, world);
     }
 
     private void updateShape(Entity entity) {
@@ -86,4 +101,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
+    public <T> List<T> getAll(Class<T> service){
+        return SPILocator.locateAll(service);
+    }
 }
