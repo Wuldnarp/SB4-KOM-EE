@@ -29,7 +29,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     public EnemyControlSystem(){
         this.random = new Random();
-        this.shootTimer = 3;
+        this.shootTimer = 2;
         this.moveTimer = 3;
     }
 
@@ -52,8 +52,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             shootTimer -= gameData.getDelta();
             if(shootTimer <= 0){
                 shoot(gameData, world, positionPart);
-
-                shootTimer = 3;
+                shootTimer = 2;
             }
 
             movingPart.setLeft(left);
