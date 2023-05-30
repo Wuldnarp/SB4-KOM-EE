@@ -38,7 +38,8 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         enemyShip.add(new PositionPart(x, y, radians));
         enemyShip.add(new LifePart(5,69));
-        
+        enemyShip.setRadius(3);
+
         return enemyShip;
     }
 
