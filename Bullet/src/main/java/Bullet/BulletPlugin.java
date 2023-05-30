@@ -23,7 +23,7 @@ public class BulletPlugin implements IGameBulletPluginService {
 
     private Entity createBullet(GameData gameData){
         float deacceleration = 0;
-        float acceleration = 600;
+        float acceleration = 100000;
         float maxSpeed = 600;
         float rotationSpeed = 1;
 
