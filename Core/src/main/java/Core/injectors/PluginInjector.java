@@ -10,8 +10,13 @@ import org.springframework.stereotype.Service;
 @Service("PluginInjector")
 public class PluginInjector {
 
+    private List<IGamePluginService> list;
+
+    public PluginInjector(){
+        list = SPILocator.locateAll(IGamePluginService.class);
+    }
+
     public void runPlugins(GameData gameData, World world){
-        List<IGamePluginService> list = SPILocator.locateAll(IGamePluginService.class);
         for(IGamePluginService iGamePluginService : list){
             iGamePluginService.start(gameData,world);
         }

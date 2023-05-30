@@ -11,13 +11,13 @@ import java.util.List;
 
 @Service("ProcessInjector")
 public class ProcessInjector {
+
+    private List<IEntityProcessingService> list;
+
+    public ProcessInjector(){
+        list = SPILocator.locateAll(IEntityProcessingService.class);
+    }
     public void runAllProcesses(GameData gameData, World world) {
-        boolean firstTime = true;
-        List<IEntityProcessingService> list = new LinkedList<>();
-        if (firstTime){
-             list = SPILocator.locateAll(IEntityProcessingService.class);
-             firstTime = false;
-        }
         for(IEntityProcessingService iGamePluginService : list){
             iGamePluginService.process(gameData,world);
         }
