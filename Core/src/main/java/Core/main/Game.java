@@ -49,7 +49,7 @@ public class Game implements ApplicationListener {
                 new GameInputProcessor(gameData)
         );
 
-        // Lookup all Game Plugins using ServiceLoader
+        // Lookup all Game Plugins using Spring
         ((PluginInjector) this.bean.getBean("PluginInjector")).runPlugins(gameData,world);
     }
 
